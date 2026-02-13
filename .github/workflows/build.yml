@@ -1,14 +1,13 @@
-name: Build for ARMv7
+name: Build ARMv7
 
 on:
-  workflow_dispatch: # 手动点一下就编译
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -21,12 +20,11 @@ jobs:
           GOOS=linux \
           GOARCH=arm \
           GOARM=7 \
-          go build -o fast-note-sync-service ./cmd/server
-          
-          chmod +x fast-note-sync-service
+          go build -o fast-note-sync-service .
+
           tar -zcvf fast-note-sync-service-linux-armv7.tar.gz fast-note-sync-service
 
-      - name: Upload artifact
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fast-note-sync-service-linux-armv7
